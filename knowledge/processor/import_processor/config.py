@@ -27,6 +27,14 @@ class ImportConfig:
     image_extensions: Set[str] = field(
         default_factory=lambda: {".jpg", ".jpeg", ".png", ".gif", ".bmp", ".webp"}
     )
+    # ======================== Milvus 配置 ========================
+    mineru_api_token: str = field(
+        default_factory=lambda: os.getenv("MINERU_API_TOKEN", "")
+    )
+
+    mineru_api_token: str = field(
+        default_factory=lambda: os.getenv("MINERU_API_TOKEN", "")
+    )
 
     # ==================== LLM 配置 ====================
     openai_api_base: str = field(

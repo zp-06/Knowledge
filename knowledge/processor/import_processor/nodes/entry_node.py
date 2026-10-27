@@ -4,7 +4,9 @@ from knowledge.processor.import_processor.base import BaseNode, T
 from knowledge.processor.import_processor.exceptions import ValidationError, StateFieldError
 from knowledge.processor.import_processor.state import ImportGraphState
 
-
+"""
+判断上传的文件是否存在，以及文件、目录是否真实存在，根据文件后缀修改state中 is_md_read_enabled  is_pdf_read_enabled            
+"""
 class EntryNode(BaseNode):
     name = "entry_node"
     def process(self, state: ImportGraphState) -> ImportGraphState:
