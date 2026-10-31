@@ -1,6 +1,7 @@
+import logging
 from pathlib import Path
 
-from knowledge.processor.import_processor.base import BaseNode, T
+from knowledge.processor.import_processor.base import BaseNode, T, setup_logging
 from knowledge.processor.import_processor.exceptions import ValidationError, StateFieldError
 from knowledge.processor.import_processor.state import ImportGraphState
 
@@ -48,9 +49,10 @@ class EntryNode(BaseNode):
 
 if __name__ == '__main__':
     entry_node = EntryNode()
+    setup_logging()
     init_state = {
         "import_file_path": r"D:\BaiduNetdiskDownload\新建文件夹 (2)\09-尚硅谷Java智能项目之掌柜智库\资料包\pdf文档\doc\Aolynk CB304n Cable网桥 用户手册-5W100-整本手册.pdf",
-        "file_dir": r"D:\my_study\my_study_of_py\zhiku\knowledge\processor\import_processor\nodes\output"
+        "file_dir": r"D:\my_study\my_study_of_py\zhiku\knowledge\processor\import_processor\output"
     }
     result_state = entry_node(init_state)
     print(result_state)

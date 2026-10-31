@@ -18,7 +18,7 @@ class ImportConfig:
 
     # ==================== 文档处理配置 ====================
     max_content_length: int = 2000  # 切片最大长度
-    img_content_length: int = 200  # 图片上下文最大长度
+    img_content_length: int = 50  # 图片上下文最大长度
     min_content_length: int = 500  # 合并短内容的最小长度
     overlap_sentences: int = 1  # 句子级切分时的重叠句数
     item_name_chunk_k: int = 3  # 商品名识别时使用的切片数量
@@ -26,14 +26,6 @@ class ImportConfig:
 
     image_extensions: Set[str] = field(
         default_factory=lambda: {".jpg", ".jpeg", ".png", ".gif", ".bmp", ".webp"}
-    )
-    # ======================== Milvus 配置 ========================
-    mineru_api_token: str = field(
-        default_factory=lambda: os.getenv("MINERU_API_TOKEN", "")
-    )
-
-    mineru_api_token: str = field(
-        default_factory=lambda: os.getenv("MINERU_API_TOKEN", "")
     )
 
     # ==================== LLM 配置 ====================
@@ -52,6 +44,15 @@ class ImportConfig:
     default_model: str = field(
         default_factory=lambda: os.getenv("MODEL", "")
     )
+    # ==================== Milvus 配置 ====================
+    mineru_api_token: str = field(
+        default_factory=lambda: os.getenv("MINERU_API_TOKEN", "")
+    )
+
+    mineru_base_url: str = field(
+        default_factory=lambda: os.getenv("MINERU_BASE_URL", "")
+    )
+
 
     # ==================== Milvus 配置 ====================
     milvus_url: str = field(

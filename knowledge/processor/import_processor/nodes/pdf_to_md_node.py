@@ -207,8 +207,8 @@ if __name__ == '__main__':
     node = PdfToMdNode()
 
     state = {
-        "pdf_path":r"D:\workspace\pycharm\shopkeeper-brain-BJ0108\knowledge\processor\import_processor\input_dir\万用表RS-12的使用.pdf",
-        "file_dir":r"D:\workspace\pycharm\shopkeeper-brain-BJ0108\knowledge\processor\import_processor\output_dir"
+        "pdf_path": r"D:\BaiduNetdiskDownload\新建文件夹 (2)\09-尚硅谷Java智能项目之掌柜智库\资料包\pdf文档\doc\Aolynk CB304n Cable网桥 用户手册-5W100-整本手册.pdf",
+        "file_dir": r"D:\my_study\my_study_of_py\zhiku\knowledge\processor\import_processor\output"
     }
 
     state_result = node(state)
