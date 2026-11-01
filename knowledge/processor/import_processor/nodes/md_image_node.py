@@ -411,7 +411,7 @@ class MdImageNode(BaseNode):
 
 if __name__ == '__main__':
     state = {
-        "md_path":r"D:\workspace\pycharm\shopkeeper-brain-BJ0108\knowledge\processor\import_processor\output_dir\万用表RS-12的使用\万用表RS-12的使用.md"
+        "md_path":r"D:\my_study\my_study_of_py\zhiku\knowledge\processor\import_processor\output\Aolynk CB304n Cable网桥 用户手册-5W100-整本手册\Aolynk CB304n Cable网桥 用户手册-5W100-整本手册.md"
     }
 
     node = MdImageNode()

@@ -1,4 +1,5 @@
 import threading
+from pathlib import Path
 from typing import Any, List, Optional, Tuple, Union
 
 import torch
@@ -12,6 +13,44 @@ from sentence_transformers import CrossEncoder
 from knowledge.utils.clients.base import BaseClientManager, logger
 
 load_dotenv()
+
+
+def resolve_model_dir(path: str) -> str:
+    """
+    把「模型缓存目录」解析成「真正含 config.json 的目录」。
+
+    ModelScope 新版缓存的目录是嵌套的，下载后长这样::
+
+        <cache>/models/BAAI/bge-m3/                      <- 只有 .lock 和一个 models 目录
+            models/BAAI--bge-m3/snapshots/master/        <- 真正的权重、config.json、tokenizer
+
+    直接把这个缓存根目录交给 transformers，会因为找不到 config.json 而报
+    "Unrecognized model in ... Should have a `model_type` key in its config.json"。
+    本函数自动下钻到 snapshot 目录；如果传入的已经是正确目录则原样返回。
+    """
+    root = Path(path)
+    if (root / "config.json").is_file():
+        return str(root)
+
+    if not root.is_dir():
+        raise FileNotFoundError(f"模型目录不存在: {path}")
+
+    patterns = (
+        "models/*/snapshots/*/config.json",
+        "*/snapshots/*/config.json",
+        "snapshots/*/config.json",
+    )
+    candidates = {c for pattern in patterns for c in root.glob(pattern)}
+    if not candidates:
+        raise FileNotFoundError(
+            f"{path} 下没有 config.json，也没有可下钻的 snapshots 目录，"
+            f"请确认模型已完整下载（或将路径指向包含 config.json 的目录）。"
+        )
+
+    # 多个快照时取最近修改的那个
+    latest = max(candidates, key=lambda p: (p.parent.stat().st_mtime, str(p)))
+    logger.info(f"模型路径 {path} 自动解析为快照目录 {latest.parent}")
+    return str(latest.parent)
 
 
 class _BgeCrossEncoderRerankClient:
@@ -146,7 +185,7 @@ class AIClients(BaseClientManager):
 
         try:
             # 1. 获取环境变量
-            model_name = cls._require_env('BGE_M3_PATH')
+            model_name = resolve_model_dir(cls._require_env('BGE_M3_PATH'))
             device = cls._require_env('BGE_DEVICE')
             fp16_str = cls._require_env('BGE_FP16')
 
@@ -179,7 +218,7 @@ class AIClients(BaseClientManager):
 
         try:
             # 1. 获取环境变量
-            model_name_or_path = cls._require_env('BGE_RERANKER_LARGE')
+            model_name_or_path = resolve_model_dir(cls._require_env('BGE_RERANKER_LARGE'))
             device = cls._require_env('BGE_DEVICE')
             fp16_str = cls._require_env('BGE_FP16')
             # 与 BGE_M3 嵌入客户端一致：为 true/1 时启用半精度（此前误写成 false 时启用）

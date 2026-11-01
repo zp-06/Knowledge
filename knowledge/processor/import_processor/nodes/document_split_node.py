@@ -6,7 +6,7 @@ from typing import Tuple, List, Dict, Any
 
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 
-from knowledge.processor.import_processor.base import BaseNode, T
+from knowledge.processor.import_processor.base import BaseNode, T, setup_logging
 from knowledge.processor.import_processor.exceptions import StateFieldError
 from knowledge.processor.import_processor.state import ImportGraphState
 from knowledge.utils.markdown_util import MarkdownTableLinearizer
@@ -331,19 +331,20 @@ class DocumentSplitNode(BaseNode):
 
 
 if __name__ == '__main__':
+    setup_logging();
     #1. 将new.md的内容读取出来
     document_split_node = DocumentSplitNode()
 
-    md_path = r"D:\workspace\pycharm\shopkeeper-brain-BJ0108\knowledge\processor\import_processor\output_dir\万用表RS-12的使用\万用表RS-12的使用_new.md"
+    md_path = r"D:\my_study\my_study_of_py\zhiku\knowledge\processor\import_processor\output\Aolynk CB304n Cable网桥 用户手册-5W100-整本手册\Aolynk CB304n Cable网桥 用户手册-5W100-整本手册.md"
 
     with open(md_path, "r", encoding="utf-8") as f:
         md_content = f.read()
 
     init_state = {
-        "md_path":r"D:\workspace\pycharm\shopkeeper-brain-BJ0108\knowledge\processor\import_processor\output_dir\万用表RS-12的使用\万用表RS-12的使用.md",
+        "md_path":md_path,
         "md_content": md_content,
         "file_title": "万用表RS-12的使用_new.md",
-        "file_dir": r"D:\workspace\pycharm\shopkeeper-brain-BJ0108\knowledge\processor\import_processor\output_dir"
+        "file_dir": r"D:\my_study\my_study_of_py\zhiku\knowledge\processor\import_processor\output"
     }
 
     document_split_node(state=init_state)

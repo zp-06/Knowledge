@@ -1,1 +1,5 @@
 knowledge/.env
+# 虚拟环境与构建产物（此前误提交，现不再跟踪）
+knowledge/.venv/
+__pycache__/
+*.pyc

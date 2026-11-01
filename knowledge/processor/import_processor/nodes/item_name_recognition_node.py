@@ -150,6 +150,13 @@ class ItemNameRecognitionNode(BaseNode):
         return hybrid_vectors
 
     def _insert_to_milvus(self, item_name:str, hybrid_vectors:dict):
+        #0. 嵌入失败时 _embedding_item_name 会返回 None，这里直接跳过，
+        #   避免下游 hybrid_vectors.get(...) 抛 'NoneType' object has no attribute 'get'
+        if not hybrid_vectors:
+            self.logger.warning(
+                "嵌入向量为空（嵌入模型不可用或生成失败），跳过写入 Milvus；商品名仍会传给下游节点"
+            )
+            return
         #1. 创建Milvus客户端
         try:
             milvus_client = StorageClients.get_milvus_client()
@@ -251,15 +258,14 @@ if __name__ == '__main__':
     node = ItemNameRecognitionNode()
 
     #从chunks.json中读取chunks
-    json_path = r"D:\workspace\pycharm\shopkeeper-brain-BJ0108\knowledge\processor\import_processor\output_dir\万用表RS-12的使用\chunks.json"
-
+    json_path = r"D:\my_study\my_study_of_py\zhiku\knowledge\processor\import_processor\output\Aolynk CB304n Cable网桥 用户手册-5W100-整本手册\chunks.json"
     with open(json_path,"r",encoding="utf-8") as f:
         chunks = json.loads(f.read())
 
     state = {
-        "md_path":r"D:\workspace\pycharm\shopkeeper-brain-BJ0108\knowledge\processor\import_processor\output_dir\万用表RS-12的使用\万用表RS-12的使用.md",
-        "file_dir":r"D:\workspace\pycharm\shopkeeper-brain-BJ0108\knowledge\processor\import_processor\output_dir",
-        "file_title":"万用表RS-12的使用",
+        "md_path":r"D:\my_study\my_study_of_py\zhiku\knowledge\processor\import_processor\output\Aolynk CB304n Cable网桥 用户手册-5W100-整本手册\Aolynk CB304n Cable网桥 用户手册-5W100-整本手册.md",
+        "file_dir":r"D:\my_study\my_study_of_py\zhiku\knowledge\processor\import_processor\output",
+        "file_title":"网桥",
         "chunks":chunks
     }
 
