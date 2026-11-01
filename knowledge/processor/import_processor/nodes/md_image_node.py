@@ -322,7 +322,7 @@ class _ImageUploader:
         remote_urls = {}
         # 1. 创建MinIO客户端对象
         try:
-            minio_client = StorageClients.get_minio()
+            minio_client = StorageClients.get_minio_client()
         except ConnectionError as e:
             self.logger.warning(f"无法连接到MinIO服务器，图片将无法上传: {e}")
             # 兜底: 所有图片使用原路径
