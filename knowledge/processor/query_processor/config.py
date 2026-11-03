@@ -44,10 +44,10 @@ class QueryConfig:
 
     # ==================== 检索配置 ====================
     embedding_search_limit: int = field(
-        default_factory=lambda: int(os.getenv("EMBEDDING_SEARCH_LIMIT", "5"))
+        default_factory=lambda: int(os.getenv("EMBEDDING_SEARCH_LIMIT", "10"))
     )
     hyde_search_limit: int = field(
-        default_factory=lambda: int(os.getenv("HYDE_SEARCH_LIMIT", "5"))
+        default_factory=lambda: int(os.getenv("HYDE_SEARCH_LIMIT", "10"))
     )
 
     # ==================== 商品确认节点配置 ====================
